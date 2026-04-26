@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Dev Playbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --text: #e8e8e8;
+      --muted: #777;
+      --dim: #444;
+      --amber: #f59e0b;
+      --amber-dim: rgba(245, 158, 11, 0.1);
+      --amber-border: rgba(245, 158, 11, 0.25);
+      --mono: 'JetBrains Mono', 'Fira Code', monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ─── Layout ─── */
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 64px 24px 120px;
+    }
+
+    /* ─── Header ─── */
+    .header {
+      margin-bottom: 64px;
+    }
+
+    .header h1 {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--amber);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav {
+      margin-top: 20px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav a {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav a:hover { color: var(--amber); }
+
+    /* ─── Sections ─── */
+    .section {
+      margin-bottom: 72px;
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: #aaa;
+      margin-bottom: 16px;
+    }
+
+    /* ─── Callout ─── */
+    .callout {
+      background: var(--amber-dim);
+      border-left: 3px solid var(--amber);
+      border-radius: 0 6px 6px 0;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 14px;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* ─── Flow steps ─── */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 24px 0;
+      gap: 4px;
+    }
+
+    .flow-step {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 7px 14px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .flow-arrow {
+      font-family: var(--mono);
+      color: var(--amber);
+      font-size: 14px;
+      padding: 0 4px;
+    }
+
+    /* ─── Formula ─── */
+    .formula-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .formula-text {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 20px;
+    }
+
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .cost-table th {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .cost-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      color: #aaa;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .cost-table tr:last-child td { border-bottom: none; }
+
+    .cost-table .highlight td { color: var(--amber); }
+
+    /* ─── Habit list ─── */
+    .habit-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .habit-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .habit-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--amber);
+      min-width: 22px;
+      padding-top: 2px;
+    }
+
+    .habit-body {}
+
+    .habit-name {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .habit-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    /* ─── Model guide ─── */
+    .model-row {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .model-row:last-child { border-bottom: none; }
+
+    .model-name {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 60px;
+    }
+
+    .model-name.haiku { color: #34d399; }
+    .model-name.sonnet { color: #60a5fa; }
+    .model-name.opus { color: #a78bfa; }
+
+    .model-arrow {
+      font-family: var(--mono);
+      color: var(--dim);
+      font-size: 12px;
+    }
+
+    .model-desc {
+      font-size: 13px;
+      color: #aaa;
+      flex: 1;
+    }
+
+    .model-cost {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+    }
+
+    /* ─── TDD loop ─── */
+    .tdd-flow {
+      font-family: var(--mono);
+      font-size: 13px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      line-height: 2;
+    }
+
+    .tdd-flow .arrow { color: var(--amber); }
+    .tdd-flow .label { color: var(--text); }
+    .tdd-flow .pass { color: #34d399; }
+    .tdd-flow .fail { color: #f87171; }
+    .tdd-flow .note { color: var(--muted); }
+
+    /* ─── Prompt cards ─── */
+    .prompt-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .prompt-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .prompt-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .prompt-card-body {
+      padding: 14px 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: #999;
+      white-space: pre-wrap;
+    }
+
+    /* ─── Code block ─── */
+    .code-wrap {
+      position: relative;
+    }
+
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: #aaa;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .code-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ─── Copy button ─── */
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .copy-btn.copied {
+      border-color: var(--amber);
+      color: var(--amber);
+      background: var(--amber-dim);
+    }
+
+    /* ─── Footer ─── */
+    .footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer a:hover { color: var(--amber); }
+
+    /* ─── Print ─── */
+    @media print {
+      body { background: white; color: black; }
+      .header h1, .section-title { color: #92400e; }
+      .nav, .copy-btn { display: none; }
+      .callout { background: #fffbeb; border-color: #d97706; color: black; }
+      .formula-block, .tdd-flow, .prompt-card, .code-block { background: #f9f9f9; border-color: #ddd; }
+      .formula-text { color: #92400e; }
+      .tdd-flow .arrow { color: #d97706; }
+      .model-name.haiku { color: #059669; }
+      .model-name.sonnet { color: #2563eb; }
+      .model-name.opus { color: #7c3aed; }
+      p, .habit-desc, .model-desc { color: #555; }
+      .muted { color: #888; }
+      .cost-table td, .cost-table th { color: #555; }
+      .footer { color: #aaa; }
+      .page { padding: 32px 0; }
+      .section { margin-bottom: 40px; }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      .flow { gap: 6px; }
+      .flow-step { font-size: 11px; padding: 6px 10px; }
+      .formula-text { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <h1>AI Dev Playbook</h1>
+    <p>Spend less. Build more. Ship faster.</p>
+    <nav class="nav">
+      <a href="https://github.com/talootdev09/ai-dev-playbook">GitHub</a>
+      <a href="#approach">The Approach</a>
+      <a href="#habits">10 Habits</a>
+      <a href="#tdd">TDD Loop</a>
+      <a href="#prompts">Prompts</a>
+    </nav>
+  </header>
+
+  <!-- The Approach -->
+  <section class="section" id="approach">
+    <div class="section-title">The Approach</div>
+    <h2>Free model thinks. Agent builds.</h2>
+    <p>
+      Most developers open their agent immediately when they get a task. That's the expensive mistake.
+      Agents are powerful but priced accordingly. Don't pay for thinking when free models think just as well.
+    </p>
+
+    <div class="flow">
+      <div class="flow-step">1. Get task</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">2. Craft prompt (free AI)</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">3. Run agent</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">4. Review diff</div>
+    </div>
+
+    <div class="callout">
+      Open ChatGPT or Claude.ai (free tier). Describe the task. Ask it to help you write a clear,
+      structured prompt for your coding agent. Refine until it's airtight. Then paste it into Claude Code.
+      This single habit cuts agent token usage by 40–60%.
+    </div>
+
+    <p>
+      The free model handles ambiguity. The agent handles execution. When the agent gets a precise prompt,
+      it produces precise output — no corrections, no back and forth, no wasted tokens re-reading a growing history.
+    </p>
+    <p>
+      Review the diff, not the codebase. If the diff matches the prompt and the tests pass, you're done.
+    </p>
+  </section>
+
+  <!-- Token Formula -->
+  <section class="section" id="formula">
+    <div class="section-title">Token Cost Formula</div>
+    <h2>The math that changes everything</h2>
+
+    <div class="formula-block">
+      <div class="formula-text">Total = S × N(N+1) / 2</div>
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>Messages (N)</th>
+            <th>Total tokens (~500 tok/msg)</th>
+            <th>vs. 5 messages</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5</td>
+            <td>7,500</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>27,500</td>
+            <td>3.7×</td>
+          </tr>
+          <tr>
+            <td>20</td>
+            <td>105,000</td>
+            <td>14×</td>
+          </tr>
+          <tr class="highlight">
+            <td>30</td>
+            <td>232,500</td>
+            <td>31×</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Message 30 costs 31× more than message 1 — not because it's longer, but because the model
+      re-reads the full conversation context on every message. N is the variable with the most leverage.
+      Keep sessions short. Start fresh. Batch everything.
+    </p>
+  </section>
+
+  <!-- 10 Habits -->
+  <section class="section" id="habits">
+    <div class="section-title">10 Token Efficiency Habits</div>
+    <h2>Keep N small. Keep prompts sharp.</h2>
+
+    <ul class="habit-list">
+      <li>
+        <span class="habit-num">01</span>
+        <div class="habit-body">
+          <div class="habit-name">Edit your prompt — don't send a follow-up</div>
+          <div class="habit-desc">Click edit on your last message, fix it, regenerate. Follow-ups stack context. Edits replace it.</div>
+        </div>
+      </li>
+      <li>
+        <span class="habit-num">02</span>
+        <div class="habit-body">
+          <div class="habit-name">Start fresh every 15–20 messages</div>
+          <div class="habit-desc">Ask Claude to summarize → copy it → new chat → paste as first message. Saves 40–60% on long sessions.</div>
+        </div>
+      </li>
+      <li>
+        <span class="habit-num">03</span>
+        <div class="habit-body">
+          <div class="habit-name">Batch your questions</div>
+          <div class="habit-desc">Three questions in one message = one context load. Three separate messages = three context loads.</div>
+        </div>
+      </li>
+      <li>
+        <span class="habit-num">04</span>
+        <div class="habit-body">
+          <div class="habit-name">Use Projects for recurring files</div>
+          <div class="habit-desc">Files added to a Project are cached. The same schema or spec in multiple chats gets tokenized every time without it.</div>
+        </div>
+      </li>
+      <li>
+        <span class="habit-num">05</span>
+        <div class="habit-body">
+          <div class="habit-name">Set Memory and Preferences once</div>
+          <div class="habit-desc">Your role, style, and coding preferences set at account level. Never spend 3–5 messages on setup again.</div>
+        </div>
+      </li>
+      <li>
+        <span class="habit-num">06</span>
+        <div class="habit-body">
+          <div class="habit-name">Turn off unused features</div>
+          <div class="habit-desc">Web search and connectors add tokens to every response. Only enable them when you need them.</div>
+        </div>
+      </li>
+      <li>
+        <span class="habit-num">07</span>
+        <div class="habit-body">
+          <div class="habit-name">Use the right model</div>
+          <div class="habit-desc">Haiku for simple tasks. Sonnet for real dev work. Opus for architecture and complex reasoning only.</div>
+        </div>
+      </li>
+      <li>
+        <span class="habit-num">08</span>
+        <div class="habit-body">
+          <div class="habit-name">Spread work across the day</div>
+          <div class="habit-desc">Claude uses a rolling 5-hour window. Split heavy sessions into morning / afternoon / evening.</div>
+        </div>
+      </li>
+      <li>
+        <span class="habit-num">09</span>
+        <div class="habit-body">
+          <div class="habit-name">Work off-peak</div>
+          <div class="habit-desc">Peak hours: 5AM–11AM PT weekdays. Same work runs faster and cheaper at evenings or weekends.</div>
+        </div>
+      </li>
+      <li>
+        <span class="habit-num">10</span>
+        <div class="habit-body">
+          <div class="habit-name">Enable overage as a safety net</div>
+          <div class="habit-desc">A mid-session cutoff costs more in reconstruction time than the overage. Set a monthly cap and move on.</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="callout" style="margin-top: 28px;">
+      <strong>Developer bonus — Habit #11:</strong> Drop <code style="font-family:var(--mono);font-size:12px;">claude.md</code> into your project root.
+      Claude reads it automatically every session. Never explain your stack, conventions, or preferences in chat again.
+      That's 200–500 tokens back, every single session, for the life of the project.
+    </div>
+  </section>
+
+  <!-- Model Guide -->
+  <section class="section" id="models">
+    <div class="section-title">Model Guide</div>
+    <h2>Match the model to the task.</h2>
+
+    <div>
+      <div class="model-row">
+        <span class="model-name haiku">Haiku</span>
+        <span class="model-arrow">→</span>
+        <span class="model-desc">Formatting, grammar, renaming, commit messages, quick Q&A, seed data</span>
+        <span class="model-cost">1×</span>
+      </div>
+      <div class="model-row">
+        <span class="model-name sonnet">Sonnet</span>
+        <span class="model-arrow">→</span>
+        <span class="model-desc">Feature implementation, debugging, tests, code review, refactoring</span>
+        <span class="model-cost">~5×</span>
+      </div>
+      <div class="model-row">
+        <span class="model-name opus">Opus</span>
+        <span class="model-arrow">→</span>
+        <span class="model-desc">Architecture decisions, complex multi-file refactors, security audit</span>
+        <span class="model-cost">~15×</span>
+      </div>
+    </div>
+
+    <p style="margin-top: 16px; font-size: 13px;">
+      Start cheap. Escalate only when the task genuinely requires it — not as a default, not "to be safe."
+      Sonnet handles almost all real development work. Opus is for decisions where being wrong is expensive.
+    </p>
+  </section>
+
+  <!-- TDD Loop -->
+  <section class="section" id="tdd">
+    <div class="section-title">TDD Agent Loop</div>
+    <h2>Tests are the contract. Agents implement against them.</h2>
+    <p>Without tests, agents drift. With tests, you review a diff — not a codebase.</p>
+
+    <div class="tdd-flow">
+<span class="label">Task arrives</span>
+  <span class="arrow">↓</span>
+<span class="label">Craft prompt with free model (5–10 min)</span>
+  <span class="arrow">↓</span>
+<span class="label">Agent writes failing tests first</span>
+  <span class="arrow">↓</span>
+<span class="label">Agent implements to pass the tests</span>
+  <span class="arrow">↓</span>
+<span class="label">Run tests</span>
+  <span class="arrow">↓</span>
+<span class="pass">Pass →</span> <span class="label">Review diff → Done</span>
+<span class="fail">Fail →</span> <span class="label">Agent self-corrects (max 2 retries)</span>
+  <span class="arrow">↓</span>
+<span class="note">Still failing? → You step in, adjust the prompt, retry</span>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <div class="code-header">
+        <span class="code-label">Token cost comparison</span>
+      </div>
+      <table class="cost-table" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+        <thead>
+          <tr>
+            <th>Path</th>
+            <th>~Tokens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:#aaa;">Write 10 tests + implement + review</td>
+            <td style="color:#34d399;">~7,000</td>
+          </tr>
+          <tr>
+            <td style="color:#aaa;">No tests + 1 correction round</td>
+            <td style="color:#f59e0b;">~14,000</td>
+          </tr>
+          <tr>
+            <td style="color:#aaa;">No tests + 2 correction rounds</td>
+            <td style="color:#f87171;">~34,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Quick Prompts -->
+  <section class="section" id="prompts">
+    <div class="section-title">Quick Prompts</div>
+    <h2>Copy, fill in the blanks, send.</h2>
+
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-card-title">Write failing tests first</span>
+        <button class="copy-btn" onclick="copyBlock(this, 'p1')">Copy</button>
+      </div>
+      <div class="prompt-card-body" id="p1">Before writing any implementation, write failing tests for {{feature}}.
+Cover: happy path, empty input, invalid input, edge cases.
+Use {{Jest / Vitest}}. Tests must FAIL before any implementation exists.
+Do not write implementation code yet.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-card-title">Implement to pass the tests</span>
+        <button class="copy-btn" onclick="copyBlock(this, 'p2')">Copy</button>
+      </div>
+      <div class="prompt-card-body" id="p2">Write the implementation for {{feature}} that passes all the tests you just wrote.
+Only create or modify files needed. Do not change the tests.
+Show me the diff only — not the full files.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-card-title">Summarize this session</span>
+        <button class="copy-btn" onclick="copyBlock(this, 'p3')">Copy</button>
+      </div>
+      <div class="prompt-card-body" id="p3">Summarize this session before we continue:
+1. What we built or changed (file names)
+2. What's in progress and what step we're on
+3. Decisions made and why
+4. What's next
+
+Under 150 words. I'll start a new chat with this as context.</div>
+    </div>
+  </section>
+
+  <!-- claude.md snippet -->
+  <section class="section" id="claudemd">
+    <div class="section-title">claude.md Template</div>
+    <h2>Drop this in your project root.</h2>
+    <p>Claude reads it automatically at the start of every session. Fill it in once, never repeat yourself again.</p>
+
+    <div class="code-header">
+      <span class="code-label">claude.md</span>
+      <button class="copy-btn" onclick="copyBlock(this, 'claudemd')">Copy</button>
+    </div>
+    <div class="code-block" id="claudemd"># Project Context
+
+## What This Project Does
+&lt;!-- One paragraph: what it does, who it's for --&gt;
+
+## Tech Stack
+&lt;!-- e.g. Next.js 14, TypeScript, PostgreSQL, Vitest --&gt;
+
+## Coding Conventions
+&lt;!-- Naming, file structure, patterns, what to avoid --&gt;
+
+## How I Want You to Behave
+- Be concise. No filler. No unsolicited explanations.
+- Always write failing tests before implementation (TDD).
+- When unclear, ask ONE question — never guess.
+- Only touch files relevant to the current task.
+- After completing work, summarize in 2 sentences max.
+
+## Token Efficiency Rules
+- Never repeat context already in this file.
+- Batch related changes — don't make me ask twice.
+- If the session is getting long (15+ messages), say so.
+
+## Project Notes
+&lt;!-- Gotchas, off-limits files, current sprint context --&gt;</div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span>
+      <a href="https://github.com/talootdev09/ai-dev-playbook">github.com/talootdev09/ai-dev-playbook</a>
+      · MIT License · Built to be cloned
+    </span>
+    <span>Press P to print</span>
+  </footer>
+
+</div>
+
+<script>
+  function copyBlock(btn, id) {
+    const el = document.getElementById(id)
+    const text = el.textContent || el.innerText
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copied'
+      btn.classList.add('copied')
+      setTimeout(() => {
+        btn.textContent = 'Copy'
+        btn.classList.remove('copied')
+      }, 2000)
+    }).catch(() => {
+      const range = document.createRange()
+      range.selectNode(el)
+      window.getSelection().removeAllRanges()
+      window.getSelection().addRange(range)
+      document.execCommand('copy')
+      window.getSelection().removeAllRanges()
+      btn.textContent = '✓ Copied'
+      btn.classList.add('copied')
+      setTimeout(() => {
+        btn.textContent = 'Copy'
+        btn.classList.remove('copied')
+      }, 2000)
+    })
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'p' && !e.metaKey && !e.ctrlKey &&
+        document.activeElement.tagName !== 'INPUT' &&
+        document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault()
+      window.print()
+    }
+  })
+</script>
+
+</body>
+</html>
